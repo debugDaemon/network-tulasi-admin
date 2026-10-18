@@ -71,14 +71,15 @@ export default withNuxt(
         }
     ),
     {
-        files: ["package.json"],
+        files: ["**/*.yaml", "**/*.yml"],
         rules: {
-            "jsonc/indent": ["error", 2]
+            "style/no-multi-spaces": "off"
         }
     },
     {
         rules: {
-            "yaml/indent": ["error", 2]
+            "jsonc/indent": ["error", 4],
+            "yaml/indent": ["error", 4]
         }
     }
 );

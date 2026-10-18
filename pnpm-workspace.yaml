@@ -1,20 +1,20 @@
 minimumReleaseAgeExcludePrune: true
 minimumReleaseAgeExclude:
-  - "@nuxt/test-utils@4.3.4"
+    -   "@nuxt/test-utils@4.3.4"
 
 trustPolicy: no-downgrade
 shellEmulator: true
 
 overrides:
-  semver@^6.3.1: ^7.7.1
+    semver@^6.3.1: ^7.7.1
 
 allowBuilds:
-  "@parcel/watcher": false
-  "@tailwindcss/oxide": false
-  esbuild: false
-  unrs-resolver: false
-  vue-demi: false
+    "@parcel/watcher": false
+    "@tailwindcss/oxide": false
+    esbuild: false
+    unrs-resolver: false
+    vue-demi: false
 
 permissions:
-  "@nuxtjs/robots":
-    skills: true
+    "@nuxtjs/robots":
+        skills: true
