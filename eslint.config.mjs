@@ -71,6 +71,12 @@ export default withNuxt(
         }
     ),
     {
+        files: ["package.json"],
+        rules: {
+            "jsonc/indent": ["error", 2]
+        }
+    },
+    {
         rules: {
             "yaml/indent": ["error", 2]
         }
