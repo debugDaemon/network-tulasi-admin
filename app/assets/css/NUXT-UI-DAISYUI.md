@@ -14,8 +14,10 @@ Stack: Nuxt 4, `@nuxt/ui` v4 (Tailwind v4), `daisyui` v5, `@nuxtjs/color-mode` (
 @import "tailwindcss";
 @import "@nuxt/ui";
 @plugin "daisyui" {
-    themes: black --default, light;
-};
+    themes:
+        black --default,
+        light;
+}
 ```
 
 - The plugin name is `daisyui` (not `@daisyui`).
@@ -71,10 +73,12 @@ The names in `daisyThemes` and the `themes:` line in `main.css` must stay in syn
 `nuxt.config.ts`, default to dark, follow the OS otherwise:
 
 ```ts
-colorMode: {
-    preference: "system",
-    fallback: "dark"
-},
+export default defineNuxtConfig({
+    colorMode: {
+        preference: "system",
+        fallback: "dark"
+    }
+});
 ```
 
 Note: `colorMode.dataValue` does **not** work for this; it writes the mode name (light/dark), never a theme name.
@@ -94,7 +98,10 @@ export function daisy(slots: string | Record<string, string>) {
 Usage:
 
 ```vue
-<UButton :ui="daisy('btn btn-secondary')">Contact us</UButton>
+<UButton :ui="daisy('btn btn-secondary')">
+Contact us
+</UButton>
+
 <!-- multi-slot (untested): -->
 <UCard :ui="daisy({ root: 'card', body: 'card-body' })" />
 ```
@@ -104,7 +111,7 @@ Usage:
 - daisyUI classes (`btn`, `card`...) are plain CSS using theme variables, **not** `@apply` macros, so they cannot be expanded into utilities.
 - Nuxt UI builds classes with `tailwind-variants` + `tailwind-merge`, which do not know `btn`. Writing `<UButton class="btn btn-secondary">` keeps Nuxt's utilities too, and they beat daisyUI's CSS layer (mixed padding/radius).
 - A daisyUI `prefix` does not help: the problem is stacking, not naming.
-- The `ui` prop accepts a **function** per slot that *replaces* the resolved classes. `daisy()` wraps that, giving a pure daisyUI element. (`:class` does not accept functions.)
+- The `ui` prop accepts a **function** per slot that _replaces_ the resolved classes. `daisy()` wraps that, giving a pure daisyUI element. (`:class` does not accept functions.)
 - Only `ULink` has a `raw` prop; `<ULink raw class="btn">` is also clean.
 
 ## `ui.theme.unstyled` (currently off)

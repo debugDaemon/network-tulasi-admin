@@ -1,8 +1,10 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 @plugin "daisyui" {
-    themes: black --default, light;
-};
+    themes:
+        black --default,
+        light;
+}
 
 /* Point Nuxt UI's surface tokens at the active daisyUI theme */
 :root {
