@@ -25,56 +25,58 @@ useSeoMeta({
 </script>
 
 <template>
-    <UApp>
-        <UHeader>
-            <template #left>
-                <NuxtLink
-                    to="/"
-                    class="focus-visible:outline-3 outline-primary/25 rounded-md p-1 -ms-1"
-                >
-                    <AppLogo class="w-auto h-6 shrink-0" />
-                </NuxtLink>
+    <div id="nuxt-ui-scope">
+        <UApp portal="#nuxt-ui-scope">
+            <UHeader>
+                <template #left>
+                    <NuxtLink
+                        to="/"
+                        class="focus-visible:outline-3 outline-primary/25 rounded-md p-1 -ms-1"
+                    >
+                        <AppLogo class="w-auto h-6 shrink-0" />
+                    </NuxtLink>
 
-                <TemplateMenu />
-            </template>
+                    <TemplateMenu />
+                </template>
 
-            <template #right>
-                <UColorModeButton />
+                <template #right>
+                    <UColorModeButton />
 
-                <UButton
-                    to="https://github.com/nuxt-ui-templates/starter"
-                    target="_blank"
-                    icon="i-simple-icons-github"
-                    aria-label="GitHub"
-                    color="neutral"
-                    variant="ghost"
-                />
-            </template>
-        </UHeader>
+                    <UButton
+                        to="https://github.com/nuxt-ui-templates/starter"
+                        target="_blank"
+                        icon="i-simple-icons-github"
+                        aria-label="GitHub"
+                        color="neutral"
+                        variant="ghost"
+                    />
+                </template>
+            </UHeader>
 
-        <UMain>
-            <NuxtPage />
-        </UMain>
+            <UMain>
+                <NuxtPage />
+            </UMain>
 
-        <USeparator icon="i-simple-icons-nuxtdotjs" />
+            <USeparator icon="i-simple-icons-nuxtdotjs" />
 
-        <UFooter>
-            <template #left>
-                <p class="text-sm text-muted">
-                    Built with Nuxt UI • © {{ new Date().getFullYear() }}
-                </p>
-            </template>
+            <UFooter>
+                <template #left>
+                    <p class="text-sm text-muted">
+                        Built with Nuxt UI • © {{ new Date().getFullYear() }}
+                    </p>
+                </template>
 
-            <template #right>
-                <UButton
-                    to="https://github.com/nuxt-ui-templates/starter"
-                    target="_blank"
-                    icon="i-simple-icons-github"
-                    aria-label="GitHub"
-                    color="neutral"
-                    variant="ghost"
-                />
-            </template>
-        </UFooter>
-    </UApp>
+                <template #right>
+                    <UButton
+                        to="https://github.com/nuxt-ui-templates/starter"
+                        target="_blank"
+                        icon="i-simple-icons-github"
+                        aria-label="GitHub"
+                        color="neutral"
+                        variant="ghost"
+                    />
+                </template>
+            </UFooter>
+        </UApp>
+    </div>
 </template>
