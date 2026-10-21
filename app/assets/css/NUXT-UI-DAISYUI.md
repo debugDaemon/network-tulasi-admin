@@ -6,7 +6,7 @@ Stack: Nuxt 4, `@nuxt/ui` v4 (Tailwind v4), `daisyui` v5, `@nuxtjs/color-mode` (
 
 > Nuxt 4 ships Tailwind through `@nuxt/ui`. Do **not** add `@nuxtjs/tailwindcss`; it conflicts and breaks `pnpm dev`.
 
-## Setup (4 pieces)
+## Setup (3 pieces)
 
 ### 1. daisyUI plugin: `main.css`
 
@@ -20,36 +20,14 @@ Stack: Nuxt 4, `@nuxt/ui` v4 (Tailwind v4), `daisyui` v5, `@nuxtjs/color-mode` (
 }
 ```
 
+- daisyUI stays global (`:root`), so `<html data-theme>` themes everything. It also writes `--color-primary` etc. on `:root`, which would override Nuxt UI, so Nuxt UI is scoped (below).
 - The plugin name is `daisyui` (not `@daisyui`).
 - Every theme you use must be listed in `themes:`, or daisyUI will not emit it.
 - If VS Code warns about `@plugin`/`@theme`, set `"css.lint.unknownAtRules": "ignore"` in `.vscode/settings.json`.
 
-### 2. Point Nuxt UI surface tokens at daisyUI: `main.css`
+### 2. Theme switching and Nuxt UI scope
 
-Nuxt UI uses its own `--ui-*` variables. Map them to the active daisyUI theme (no colors are defined here):
-
-```css
-:root {
-    --ui-bg: var(--color-base-100);
-    --ui-bg-muted: var(--color-base-200);
-    --ui-bg-elevated: var(--color-base-200);
-    --ui-bg-accented: var(--color-base-300);
-    --ui-border: var(--color-base-300);
-    --ui-border-muted: var(--color-base-300);
-    --ui-border-accented: var(--color-base-300);
-    --ui-text: var(--color-base-content);
-    --ui-text-highlighted: var(--color-base-content);
-    --ui-text-toned: var(--color-base-content);
-    --ui-text-muted: var(--color-base-content);
-    --ui-text-dimmed: var(--color-base-content);
-}
-```
-
-Trade-off: every text token points to the same `base-content`, so muted/dimmed text shades are lost. Nuxt UI's primary/neutral palette (`app.config.ts`) is not mapped to daisyUI.
-
-### 3. Theme switching: `app/plugins/daisy-theme.ts`
-
-`UColorModeButton` and `@nuxtjs/color-mode` only ever toggle `light` / `dark`, and Nuxt UI's `dark:` classes depend on the `dark` class. So keep that, and map the mode to a daisyUI theme name on `<html data-theme>`:
+`UColorModeButton` and `@nuxtjs/color-mode` only ever toggle `light` / `dark`, and Nuxt UI's `dark:` classes depend on the `dark` class. So keep that; `app/plugins/daisy-theme.ts` maps the mode to a daisyUI theme and sets `<html data-theme>`:
 
 ```ts
 const daisyThemes = {
@@ -70,6 +48,12 @@ export default defineNuxtPlugin(() => {
 
 The names in `daisyThemes` and the `themes:` line in `main.css` must stay in sync.
 
+**Nuxt UI scope:** `app.vue` wraps `<UApp>` in `<div id="nuxt-ui-scope">` and passes `portal="#nuxt-ui-scope"`, so teleported menus/modals stay inside it. Both libraries define `--color-primary/secondary/success/info/warning/error`, so `main.css` does three things:
+
+1. Inside `#nuxt-ui-scope`, those variables point at Nuxt's `--ui-*` values, so Nuxt UI components keep their stock colors (amber primary).
+2. Nuxt UI paints the page from `--ui-bg`, `--ui-text`, `--ui-border` tokens; `:root` points those at daisyUI's `base-100/200/300` and `base-content`. No element styles are replicated, the page simply shows the active daisyUI theme.
+3. The `daisy` utility restores daisyUI's colors on an element inside the scope (using copies saved on `<html>` as `--daisy-*`). Only `daisy()` adds it, so daisyUI colors are opt-in: a raw `class="btn"` is plain daisyUI CSS stacked on Nuxt UI classes, so use the helper, `:ui="daisy('btn btn-secondary')"` renders with the daisyUI theme.
+
 `nuxt.config.ts`, default to dark, follow the OS otherwise:
 
 ```ts
@@ -83,7 +67,7 @@ export default defineNuxtConfig({
 
 Note: `colorMode.dataValue` does **not** work for this; it writes the mode name (light/dark), never a theme name.
 
-### 4. The `daisy()` helper: `app/utils/daisy.ts` (auto-imported)
+### 3. The `daisy()` helper: `app/utils/daisy.ts` (auto-imported)
 
 ```ts
 export function daisy(slots: string | Record<string, string>) {
@@ -113,6 +97,10 @@ Contact us
 - A daisyUI `prefix` does not help: the problem is stacking, not naming.
 - The `ui` prop accepts a **function** per slot that _replaces_ the resolved classes. `daisy()` wraps that, giving a pure daisyUI element. (`:class` does not accept functions.)
 - Only `ULink` has a `raw` prop; `<ULink raw class="btn">` is also clean.
+
+## "Override" strategy
+
+Nuxt UI v2 had `strategy: "override"`. v4 has no such option; the equivalent is the function slot replacer used by `daisy()`: it **replaces** the resolved slot classes instead of merging. The same function in `app.config.ts` replaces only the theme defaults (define it in one place only).
 
 ## `ui.theme.unstyled` (currently off)
 

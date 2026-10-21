@@ -7,6 +7,16 @@
         "source.fixAll.eslint": "explicit"
     },
 
+    "emmet.includeLanguages": { "vue": "html" },
+    "emmet.triggerExpansionOnTab": true,
+    "emmet.showExpandedAbbreviation": "always",
+    "editor.tabCompletion": "on",
+    "[vue]": {
+        "editor.inlineSuggest.enabled": true,
+        "editor.inlineSuggest.suppressSuggestions": true,
+        "editor.quickSuggestions": { "other": "on", "comments": "off", "strings": "on" }
+    },
+
     "files.associations": {
         "*.css": "tailwindcss",
         "*.scss": "tailwindcss"
