@@ -29,7 +29,6 @@ html {
     --daisy-error: var(--color-error);
 }
 
-
 /* gives Nuxt UI components their own primary, secondary and so on, so the amber badge and the "Get started" button stay stock. */
 #nuxt-ui-scope {
     --color-primary: var(--ui-primary);
@@ -39,7 +38,6 @@ html {
     --color-warning: var(--ui-warning);
     --color-error: var(--ui-error);
 }
-
 
 /* restores the saved daisyUI colours on any element that daisy() styles. */
 @utility daisy {
