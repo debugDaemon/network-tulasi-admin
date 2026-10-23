@@ -26,3 +26,30 @@ logs
 # Playwright
 playwright-report/
 test-results/
+
+
+# AI Agent local caches and tool directories
+.bob/
+.continue/
+.cortex/
+.devin/
+.grok/
+.hermes/
+.inferencesh/
+.jazz/
+.junie/
+.kimchi/
+.mcpjam/
+.minimax/
+.mux/
+.openhands/
+.orion/
+.palm/
+.quill/
+.sage/
+.tulip/
+.vercel/
+.weaviate/
+.xenon/
+.yarn/
+.zephyr/
